@@ -28,6 +28,10 @@
                         {{ __('Manajemen Dokter') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('admin.medicines.index')" :active="request()->routeIs('admin.medicines.*')" class="text-white hover:text-yellow-200 transition">
+                        {{ __('Inventaris Obat') }}
+                    </x-nav-link>
+
                     <!-- Dropdown -->
                     <div class="relative">
                         <x-dropdown align="right" width="48">
@@ -104,6 +108,7 @@
             @if(Auth::user()->role === \App\Enums\UserRole::ADMIN)
                 <x-responsive-nav-link :href="route('admin.polis.index')">{{ __('Manajemen Poli') }}</x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.doctors.index')">{{ __('Manajemen Dokter') }}</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.medicines.index')">{{ __('Inventaris Obat') }}</x-responsive-nav-link>
             @endif
 
             @if(Auth::user()->role === \App\Enums\UserRole::PASIEN)

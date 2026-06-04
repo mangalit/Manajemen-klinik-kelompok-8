@@ -16,6 +16,13 @@ class MedicalRecord extends Model
         'prescription',
     ];
 
+    public function medicines()
+    {
+        return $this->belongsToMany(Medicine::class)
+            ->withPivot('quantity', 'instructions', 'price_at_time')
+            ->withTimestamps();
+    }
+
     // RELASI: Rekam medis ini milik satu Booking
     public function booking()
     {

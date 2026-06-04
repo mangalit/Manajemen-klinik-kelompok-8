@@ -11,8 +11,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Judul aplikasi (default: Laravel kalau APP_NAME belum di-set di .env) -->
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <title>{{ config('app.name', 'Klinik Sehat') }}</title>
+        <link rel="icon" href="{{ Vite::asset('public/images/logo.png') }}" type="png">
         <!-- Fonts (pakai Bunny.net, lebih cepat dan bebas tracking) -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -24,7 +24,7 @@
     <body class="font-sans antialiased">
         <!-- Background + min height (tailwind) -->
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            
+
             <!-- Navigation bar (header menu), biasanya ada di layouts/navigation.blade.php -->
             @include('layouts.navigation')
 
@@ -47,7 +47,7 @@
 
         <!-- AlpineJS untuk interaktivitas ringan (dropdown, modal, dll) -->
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-        
+
         <!-- Stack scripts: child view bisa @push('scripts') untuk tambah JS -->
         @stack('scripts')
     </body>

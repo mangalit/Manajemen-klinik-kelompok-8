@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardRedirectorController;
 use App\Http\Controllers\Admin\PoliController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\DoctorScheduleController;
+use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Pasien\BookingController;
 use App\Http\Controllers\Dokter\DashboardController; 
 use App\Http\Controllers\Dokter\MedicalRecordController; 
@@ -52,6 +53,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     Route::resource('polis', PoliController::class);
     Route::resource('doctors', DoctorController::class);
+    Route::resource('medicines', MedicineController::class);
     Route::resource('doctors.schedules', DoctorScheduleController::class)->shallow();
     // RUTE BARU UNTUK LAPORAN
     Route::get('/reports/revenue', [ReportController::class, 'revenueReport'])->name('reports.revenue');

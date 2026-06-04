@@ -18,7 +18,15 @@ class PaymentController extends Controller
             return redirect()->route('kasir.dashboard')->with('error', 'Pasien ini sudah melakukan pembayaran.');
         }
 
-        return view('kasir.payments.create', compact('booking'));
+        // Hitung biaya obat otomatis dari rekam medis
+        $medicineFee = 0;
+        if ($booking->medicalRecord) {
+            foreach ($booking->medicalRecord->medicines as $medicine) {
+                $medicineFee += $medicine->pivot->quantity * $medicine->pivot->price_at_time;
+            }
+        }
+
+        return view('kasir.payments.create', compact('booking', 'medicineFee'));
     }
 
     // Menyimpan data pembayaran
