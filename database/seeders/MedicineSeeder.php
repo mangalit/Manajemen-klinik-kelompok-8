@@ -53,7 +53,7 @@ class MedicineSeeder extends Seeder
                 'description' => 'Antihistamin untuk meredakan gejala alergi.',
                 'stock' => 60,
                 'unit' => 'Tablet',
-                'price' => 1300,
+                'price' => 1200,
             ],
         ];
 
