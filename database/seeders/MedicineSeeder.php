@@ -47,6 +47,14 @@ class MedicineSeeder extends Seeder
                 'unit' => 'Tablet',
                 'price' => 1000,
             ],
+            [
+                'name' => 'Cetirizine 10mg',
+                'code' => 'CTZ10',
+                'description' => 'Antihistamin untuk meredakan gejala alergi.',
+                'stock' => 60,
+                'unit' => 'Tablet',
+                'price' => 1200,
+            ],
         ];
 
         foreach ($medicines as $medicine) {
