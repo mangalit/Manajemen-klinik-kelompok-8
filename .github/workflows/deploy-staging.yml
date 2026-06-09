@@ -1,12 +1,13 @@
-name: Deploy Laravel ke Staging
+name: Deploy Laravel ke Azure Staging
 
 on:
   push:
     branches:
       - staging
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy-staging:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,28 +19,44 @@ jobs:
         with:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip
+          coverage: none
 
-      - name: 📦 Install Composer dependencies
-        run: composer install --optimize-autoloader --no-progress --prefer-dist
-
-      - name: 🛠️ Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: 📦 Install NPM dan Build Assets
+      - name: 📦 Install Composer Dependencies
+        run: composer install --optimize-autoloader --no-dev --no-progress --prefer-dist
+
+      - name: 📦 Install NPM & Build Assets
         run: |
-          npm install
+          npm ci
           npm run build
 
-      - name: 📄 Copy .env file
-        run: cp .env.example .env
+      - name: 🏗️ Create Deployment Package
+        run: |
+          mkdir -p deployment-package
+          # Salin folder utama Laravel
+          cp -r app bootstrap config database public resources routes storage deployment-package/
+          # Salin file konfigurasi dasar
+          cp artisan composer.json composer.lock deployment-package/
+          # Salin vendor (wajib untuk Laravel)
+          cp -r vendor deployment-package/
+          
+          # Pastikan struktur folder storage lengkap
+          mkdir -p deployment-package/storage/framework/{sessions,views,cache}
+          mkdir -p deployment-package/storage/logs
+          mkdir -p deployment-package/bootstrap/cache
+          
+          # Atur permission agar Azure bisa menulis ke folder tersebut
+          chmod -R 775 deployment-package/storage deployment-package/bootstrap/cache
 
-      - name: 🚀 Deploy ke Azure Staging
+      - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'manajemen-klinik-staging'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_STAGING }}
-          package: .
-          cleanup: true
+          package: deployment-package
