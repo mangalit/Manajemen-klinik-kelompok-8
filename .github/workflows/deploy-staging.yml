@@ -1,0 +1,44 @@
+name: Deploy Laravel ke Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build-and-deploy-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip
+
+      - name: 📦 Install Composer dependencies
+        run: composer install --optimize-autoloader --no-progress --prefer-dist
+
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install NPM dan Build Assets
+        run: |
+          npm install
+          npm run build
+
+      - name: 📄 Copy .env file
+        run: cp .env.example .env
+
+      - name: 🚀 Deploy ke Azure Staging
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'manajemen-klinik-staging'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_STAGING }}
+          package: .
