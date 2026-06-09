@@ -47,6 +47,38 @@ class MedicineSeeder extends Seeder
                 'unit' => 'Tablet',
                 'price' => 1000,
             ],
+            [
+                'name' => 'Antasida Doen',
+                'code' => 'ANTSD',
+                'description' => 'Obat untuk meredakan gejala sakit maag.',
+                'stock' => 150,
+                'unit' => 'Tablet',
+                'price' => 200,
+            ],
+            [
+                'name' => 'Cetirizine 10mg',
+                'code' => 'CTZ10',
+                'description' => 'Antihistamin untuk meredakan gejala alergi.',
+                'stock' => 60,
+                'unit' => 'Tablet',
+                'price' => 1200,
+            ],
+            [
+                'name' => 'Betadine 15ml',
+                'code' => 'BTD15',
+                'description' => 'Antiseptik untuk luka luar.',
+                'stock' => 45,
+                'unit' => 'Botol',
+                'price' => 12000,
+            ],
+            [
+                'name' => 'Vitamin C 500mg',
+                'code' => 'VITC500',
+                'description' => 'Suplemen untuk menjaga daya tahan tubuh.',
+                'stock' => 200,
+                'unit' => 'Tablet',
+                'price' => 800,
+            ],
         ];
 
         foreach ($medicines as $medicine) {
