@@ -41,7 +41,7 @@ jobs:
           # Salin folder utama Laravel
           cp -r app bootstrap config database public resources routes storage deployment-package/
           # Salin file konfigurasi dasar
-          cp artisan composer.json composer.lock deployment-package/
+          cp artisan composer.json composer.lock nginx.conf deployment-package/
           # Salin vendor (wajib untuk Laravel)
           cp -r vendor deployment-package/
 
