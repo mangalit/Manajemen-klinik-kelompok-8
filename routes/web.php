@@ -12,8 +12,8 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\DoctorScheduleController;
 use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Pasien\BookingController;
-use App\Http\Controllers\Dokter\DashboardController; 
-use App\Http\Controllers\Dokter\MedicalRecordController; 
+use App\Http\Controllers\Dokter\DashboardController;
+use App\Http\Controllers\Dokter\MedicalRecordController;
 use App\Http\Controllers\Kasir\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Kasir\BookingConfirmationController;
@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     // diubah untuk menunjuk ke controller new DashboardController
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
+
     Route::resource('polis', PoliController::class);
     Route::resource('doctors', DoctorController::class);
     Route::resource('medicines', MedicineController::class);
@@ -95,3 +95,18 @@ Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->g
 
 // Meng-include file rute autentikasi bawaan Breeze
 require __DIR__.'/auth.php';
+
+// Route sementara untuk menjalankan migrasi dan seeder di Railway
+Route::get('/init-db', function () {
+    try {
+        // Menjalankan php artisan migrate:fresh --seed --force secara otomatis
+        Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--seed' => true,
+            '--force' => true // Wajib digunakan di mode production
+        ]);
+
+        return 'Tebas tuntas! Database dan data dummy berhasil dimasukkan.';
+    } catch (\Exception $e) {
+        return 'Aduh gagal: ' . $e->getMessage();
+    }
+});
