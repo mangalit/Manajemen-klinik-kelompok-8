@@ -98,6 +98,7 @@ require __DIR__.'/auth.php';
 
 // Route sementara untuk menjalankan migrasi dan seeder di Railway
 Route::get('/init-db', function () {
+    set_time_limit(0);
     try {
         // Menjalankan php artisan migrate:fresh --seed --force secara otomatis
         Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
