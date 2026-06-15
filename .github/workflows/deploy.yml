@@ -1,4 +1,4 @@
-name: Deploy Laravel ke Azure Staging
+name: Deploy Laravel ke Railway
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,35 +28,23 @@ jobs:
           cache: 'npm'
 
       - name: Install Composer Dependencies
-        run: composer install --optimize-autoloader --no-dev --no-progress --prefer-dist
+        run: composer install --optimize-autoloader --no-progress --prefer-dist
 
       - name: Install NPM & Build Assets
         run: |
           npm ci
           npm run build
 
-      - name: Create Deployment Package
-        run: |
-          mkdir -p deployment-package
-          # Salin folder utama Laravel
-          cp -r app bootstrap config database public resources routes storage deployment-package/
-          # Salin file konfigurasi dasar
-          cp artisan composer.json composer.lock deployment-package/
-          # Salin vendor (wajib untuk Laravel)
-          cp -r vendor deployment-package/
+      - name: Run Tests (CI)
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
 
-          # Pastikan struktur folder storage lengkap
-          mkdir -p deployment-package/storage/framework/{sessions,views,cache}
-          mkdir -p deployment-package/storage/logs
-          mkdir -p deployment-package/bootstrap/cache
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
 
-          # Atur permission agar Azure bisa menulis ke folder tersebut
-          chmod -R 775 deployment-package/storage deployment-package/bootstrap/cache
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ vars.WEBAPP_NAME }}
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_STAGING }}
-          package: deployment-package
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service ${{ vars.RAILWAY_SERVICE_NAME }} -v
