@@ -3,7 +3,7 @@ name: Deploy Laravel ke Railway
 on:
   push:
     branches:
-      - staging
+      - main
   workflow_dispatch:
 
 jobs:
