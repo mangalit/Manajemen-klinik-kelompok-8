@@ -35,6 +35,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Prepare Environment for Tests
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
       - name: Run Tests (CI)
         env:
           DB_CONNECTION: sqlite
