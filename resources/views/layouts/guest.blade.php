@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Klinik Sehat') }}</title>
-        <link rel="icon" href="{{ asset('public/images/logo.png') }}" type="png">
+        <title>{{ isset($title) ? $title . ' | ' . config('app.name', 'Klinik Sehat') : config('app.name', 'Klinik Sehat') }}</title>
+
+        <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
