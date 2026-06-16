@@ -80,7 +80,7 @@ class PaymentTest extends TestCase
         $data = [
             'consultation_fee' => 50000,
             'medicine_fee' => 20000,
-            'payment_method' => 'Cash',
+            'payment_method' => 'cash',
         ];
 
         $response = $this->actingAs($this->kasirUser)->post(route('kasir.payment.store', $this->booking), $data);
