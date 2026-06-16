@@ -56,7 +56,7 @@ class DoctorScheduleController extends Controller
     /**
      * Memperbarui data jadwal di database.
      */
-    public function update(Request $request, Doctor $doctor, Schedule $schedule)
+    public function update(Request $request, Schedule $schedule)
     {
         $request->validate([
             'day_of_week' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
@@ -67,18 +67,19 @@ class DoctorScheduleController extends Controller
 
         $schedule->update($request->all());
 
-        return redirect()->route('admin.doctors.schedules.index', $doctor->id)
+        return redirect()->route('admin.doctors.schedules.index', $schedule->doctor_id)
                          ->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     /**
      * Menghapus jadwal dari database.
      */
-    public function destroy(Doctor $doctor, Schedule $schedule)
+    public function destroy(Schedule $schedule)
     {
+        $doctorId = $schedule->doctor_id;
         $schedule->delete();
 
-        return redirect()->route('admin.doctors.schedules.index', $doctor->id)
+        return redirect()->route('admin.doctors.schedules.index', $doctorId)
                          ->with('success', 'Jadwal berhasil dihapus.');
     }
 }
