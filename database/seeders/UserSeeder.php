@@ -44,6 +44,8 @@ class UserSeeder extends Seeder
         // ===============================================================
 
         // 1. Buat dulu user pasien
+        //loler@pasien.com
+        //password
         $pasienUser = User::create([
             'name' => 'Andi Wijaya',
             'email' => 'andi@pasien.com',
