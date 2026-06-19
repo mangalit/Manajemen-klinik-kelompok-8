@@ -19,6 +19,18 @@
 
         <!-- Load CSS & JS via Vite (Laravel 9+ default) -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Script untuk mencegah FOUC Dark Mode -->
+        <script>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
+        <style>
+            [x-cloak] { display: none !important; }
+        </style>
     </head>
 
     <body class="font-sans antialiased">
