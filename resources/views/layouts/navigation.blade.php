@@ -65,6 +65,13 @@
 
             <!-- User Menu -->
             <div class="hidden sm:flex sm:items-center">
+                <!-- Real-time Clock -->
+                <div x-data="{ time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }" 
+                     x-init="setInterval(() => time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }), 1000)" 
+                     class="text-white font-mono font-bold text-sm mr-4 bg-white/20 px-3 py-1 rounded-full shadow-inner hidden md:block">
+                    <span x-text="time"></span> WIB
+                </div>
+
                 <!-- Theme Toggle Button -->
                 <div x-data="{ darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) }">
                     <button @click="darkMode = !darkMode; if(darkMode){ document.documentElement.classList.add('dark'); localStorage.theme = 'dark'; } else { document.documentElement.classList.remove('dark'); localStorage.theme = 'light'; }" class="text-white hover:text-yellow-200 p-2 mr-2 focus:outline-none transition" title="Toggle Dark Mode">
@@ -76,6 +83,10 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center px-3 py-2 text-white hover:text-yellow-200 transition">
+                            <!-- Avatar Circle -->
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-yellow-400 text-sky-800 font-bold mr-2 border-2 border-white/50 shadow-sm">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
                             <span class="font-medium">{{ Auth::user()->name }}</span>
                             <svg class="ms-1 h-4 w-4 fill-current" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.584l3.71-4.354a.75.75 0 011.14.976l-4.25 5a.75.75 0 01-1.14 0l-4.25-5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -96,6 +107,13 @@
 
             <!-- Mobile Toggle -->
             <div class="sm:hidden flex items-center space-x-2">
+                <!-- Real-time Clock (Mobile) -->
+                <div x-data="{ time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }" 
+                     x-init="setInterval(() => time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }), 1000)" 
+                     class="text-white font-mono font-bold text-xs bg-white/20 px-2 py-1 rounded shadow-inner">
+                    <span x-text="time"></span>
+                </div>
+
                 <!-- Mobile Theme Toggle -->
                 <div x-data="{ darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) }">
                     <button @click="darkMode = !darkMode; if(darkMode){ document.documentElement.classList.add('dark'); localStorage.theme = 'dark'; } else { document.documentElement.classList.remove('dark'); localStorage.theme = 'light'; }" class="text-white hover:text-yellow-200 p-2 focus:outline-none transition">
@@ -133,9 +151,17 @@
         </div>
 
         <!-- Mobile User Info -->
-        <div class="border-t border-gray-200 px-4 py-3 bg-gray-50">
-            <div class="font-medium text-base">{{ Auth::user()->name }}</div>
-            <div class="text-sm text-gray-500">{{ Auth::user()->email }}</div>
+        <div class="border-t border-gray-200 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-800">
+            <div class="flex items-center">
+                <!-- Mobile Avatar Circle -->
+                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-br from-sky-400 to-emerald-400 text-white font-bold mr-3 shadow-sm">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+                <div>
+                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ Auth::user()->email }}</div>
+                </div>
+            </div>
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
                 <form method="POST" action="{{ route('logout') }}">
